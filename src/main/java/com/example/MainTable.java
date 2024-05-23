@@ -44,64 +44,15 @@ public class MainTable extends Application {
 
         table.setEditable(true);
 
-        TableColumn firstNameCol = new TableColumn("First Name");
-        firstNameCol.setMinWidth(100);
-        firstNameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("firstName"));
-        firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        firstNameCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setFirstName(t.getNewValue());
-                    }
-                });
-
-        TableColumn lastNameCol = new TableColumn("Last Name");
-        lastNameCol.setMinWidth(100);
-        lastNameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("lastName"));
-        lastNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        lastNameCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setLastName(t.getNewValue());
-                    }
-                });
-
-        TableColumn phoneNumCol = new TableColumn("Phone Number");
-        phoneNumCol.setMinWidth(200);
-        phoneNumCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("phoneNum"));
-        phoneNumCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        phoneNumCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
-                    }
-                });
-
-        TableColumn emailCol = new TableColumn("Email");
-        emailCol.setMinWidth(200);
-        emailCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("email"));
-        emailCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        emailCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
-                    }
-                });
+        TableColumn firstNameCol = createColumn("First Name", 100);
+        TableColumn lastNameCol = createColumn("Last Name", 100);
+        TableColumn companyCol = createColumn("Company", 100);
+        TableColumn phoneNumCol = createColumn("Phone Number", 200);
+        TableColumn emailCol = createColumn("Email", 200);
+        TableColumn birthdayCol = createColumn("Birthday", 100);
 
         table.setItems(data);
-        table.getColumns().addAll(firstNameCol, lastNameCol, phoneNumCol, emailCol);
+        table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthdayCol);
 
         final TextField addFirstName = new TextField();
         addFirstName.setPromptText("First Name");
@@ -146,6 +97,23 @@ public class MainTable extends Application {
         stage.show();
     }
 
+    public TableColumn<Person, String> createColumn(String name, int width) {
+        TableColumn column = new TableColumn(name);
+        column.setMinWidth(width);
+        column.setCellValueFactory(
+                new PropertyValueFactory<Person, String>(name));
+        column.setCellFactory(TextFieldTableCell.forTableColumn());
+        column.setOnEditCommit(
+                new EventHandler<CellEditEvent<Person, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Person, String> t) {
+                        ((Person) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
+                    }
+                });
+        return column;
+    }
+
     public static class Person {
 
         private final SimpleStringProperty firstName;
@@ -180,7 +148,7 @@ public class MainTable extends Application {
             return email.get();
         }
 
-        public void setPhoneNum (String fName) {
+        public void setPhoneNum(String fName) {
             email.set(fName);
         }
 
