@@ -55,17 +55,23 @@ public class MainTable extends Application {
         table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthdayCol);
 
         final TextField addFirstName = new TextField();
-        addFirstName.setPromptText("First Name");
         addFirstName.setMaxWidth(firstNameCol.getPrefWidth());
+        addFirstName.setPromptText("First Name");
         final TextField addLastName = new TextField();
         addLastName.setMaxWidth(lastNameCol.getPrefWidth());
         addLastName.setPromptText("Last Name");
+        final TextField addCompany = new TextField();
+        addCompany.setMaxWidth(companyCol.getPrefWidth());
+        addCompany.setPromptText("Company");
         final TextField addPhoneNum = new TextField();
         addPhoneNum.setMaxWidth(phoneNumCol.getPrefWidth());
         addPhoneNum.setPromptText("Phone Number");
         final TextField addEmail = new TextField();
         addEmail.setMaxWidth(emailCol.getPrefWidth());
         addEmail.setPromptText("Email");
+        final TextField addBirthday = new TextField();
+        addBirthday.setMaxWidth(birthdayCol.getPrefWidth());
+        addBirthday.setPromptText("Birthday");
 
         final Button addButton = new Button("Add");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -74,16 +80,20 @@ public class MainTable extends Application {
                 data.add(new Person(
                         addFirstName.getText(),
                         addLastName.getText(),
+                        addCompany.getText(),
                         addPhoneNum.getText(),
-                        addEmail.getText()));
+                        addEmail.getText(),
+                        addBirthday.getText()));
                 addFirstName.clear();
                 addLastName.clear();
+                addCompany.clear();
                 addPhoneNum.clear();
                 addEmail.clear();
+                addBirthday.clear();
             }
         });
 
-        hb.getChildren().addAll(addFirstName, addLastName, addPhoneNum, addEmail, addButton);
+        hb.getChildren().addAll(addFirstName, addLastName, addCompany, addPhoneNum, addEmail, addBirthday, addButton);
         hb.setSpacing(3);
 
         final VBox vbox = new VBox();
@@ -121,7 +131,7 @@ public class MainTable extends Application {
         private final SimpleStringProperty phoneNum;
         private final SimpleStringProperty email;
 
-        private Person(String fName, String lName, String phoneNum, String email) {
+        private Person(String fName, String lName, String company, String phoneNum, String email, String bDay) {
             this.firstName = new SimpleStringProperty(fName);
             this.lastName = new SimpleStringProperty(lName);
             this.phoneNum = new SimpleStringProperty(phoneNum);
