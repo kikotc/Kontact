@@ -44,12 +44,89 @@ public class MainTable extends Application {
 
         table.setEditable(true);
 
-        TableColumn firstNameCol = createColumn("First Name", 100);
-        TableColumn lastNameCol = createColumn("Last Name", 100);
-        TableColumn companyCol = createColumn("Company", 100);
-        TableColumn phoneNumCol = createColumn("Phone Number", 200);
-        TableColumn emailCol = createColumn("Email", 200);
-        TableColumn birthdayCol = createColumn("Birthday", 100);
+        TableColumn firstNameCol = new TableColumn("First Name");
+        firstNameCol.setMinWidth(100);
+        firstNameCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("firstName"));
+        firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        firstNameCol.setOnEditCommit(
+                new EventHandler<CellEditEvent<Person, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Person, String> t) {
+                        ((Person) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setFirstName(t.getNewValue());
+                    }
+                });
+
+        TableColumn lastNameCol = new TableColumn("Last Name");
+        lastNameCol.setMinWidth(100);
+        lastNameCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("lastName"));
+        lastNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        lastNameCol.setOnEditCommit(
+                new EventHandler<CellEditEvent<Person, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Person, String> t) {
+                        ((Person) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setLastName(t.getNewValue());
+                    }
+                });
+
+        TableColumn companyCol = new TableColumn("Company");
+        companyCol.setMinWidth(100);
+        companyCol.setCellValueFactory( 
+                new PropertyValueFactory<Person, String>("company"));
+        companyCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        companyCol.setOnEditCommit(
+                new EventHandler<CellEditEvent<Person, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Person, String> t) {
+                        ((Person) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setCompany(t.getNewValue());
+                    }
+                });
+
+        TableColumn phoneNumCol = new TableColumn("Phone Number");
+        phoneNumCol.setMinWidth(200);
+        phoneNumCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("phoneNum"));
+        phoneNumCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        phoneNumCol.setOnEditCommit(
+                new EventHandler<CellEditEvent<Person, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Person, String> t) {
+                        ((Person) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setPhoneNum(t.getNewValue());
+                    }
+                });
+
+        TableColumn emailCol = new TableColumn("Email");
+        emailCol.setMinWidth(200);
+        emailCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("email"));
+        emailCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        emailCol.setOnEditCommit(
+                new EventHandler<CellEditEvent<Person, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Person, String> t) {
+                        ((Person) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
+                    }
+                });
+
+        TableColumn birthdayCol = new TableColumn("Birthday");
+        birthdayCol.setMinWidth(100);
+        birthdayCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("birthday"));
+        birthdayCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        birthdayCol.setOnEditCommit(
+                new EventHandler<CellEditEvent<Person, String>>() {
+                    @Override
+                    public void handle(CellEditEvent<Person, String> t) {
+                        ((Person) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setBirthday(t.getNewValue());
+                    }
+                });
 
         table.setItems(data);
         table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthdayCol);
@@ -107,67 +184,71 @@ public class MainTable extends Application {
         stage.show();
     }
 
-    public TableColumn<Person, String> createColumn(String name, int width) {
-        TableColumn column = new TableColumn(name);
-        column.setMinWidth(width);
-        column.setCellValueFactory(
-                new PropertyValueFactory<Person, String>(name));
-        column.setCellFactory(TextFieldTableCell.forTableColumn());
-        column.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
-                    }
-                });
-        return column;
-    }
-
     public static class Person {
 
         private final SimpleStringProperty firstName;
         private final SimpleStringProperty lastName;
+        private final SimpleStringProperty company;
         private final SimpleStringProperty phoneNum;
         private final SimpleStringProperty email;
+        private final SimpleStringProperty birthday;
 
-        private Person(String fName, String lName, String company, String phoneNum, String email, String bDay) {
-            this.firstName = new SimpleStringProperty(fName);
-            this.lastName = new SimpleStringProperty(lName);
+        private Person(String firstName, String lastName, String company, String phoneNum, String email,
+                String birthday) {
+            this.firstName = new SimpleStringProperty(firstName);
+            this.lastName = new SimpleStringProperty(lastName);
+            this.company = new SimpleStringProperty(company);
             this.phoneNum = new SimpleStringProperty(phoneNum);
             this.email = new SimpleStringProperty(email);
+            this.birthday = new SimpleStringProperty(birthday);
         }
 
         public String getFirstName() {
             return firstName.get();
         }
 
-        public void setFirstName(String fName) {
-            firstName.set(fName);
+        public void setFirstName(String input) {
+            firstName.set(input);
         }
 
         public String getLastName() {
             return lastName.get();
         }
 
-        public void setLastName(String fName) {
-            lastName.set(fName);
+        public void setLastName(String input) {
+            lastName.set(input);
+        }
+
+        public String getCompany() {
+            return company.get();
+        }
+
+        public void setCompany(String input) {
+            company.set(input);
         }
 
         public String getPhoneNum() {
-            return email.get();
+            return phoneNum.get();
         }
 
-        public void setPhoneNum(String fName) {
-            email.set(fName);
+        public void setPhoneNum(String input) {
+            phoneNum.set(input);
         }
 
         public String getEmail() {
             return email.get();
         }
 
-        public void setEmail(String fName) {
-            email.set(fName);
+        public void setEmail(String input) {
+            email.set(input);
+        }
+
+        public String getBirthday() {
+            return birthday.get();
+        }
+
+        public void setBirthday(String input) {
+            birthday.set(input);
         }
     }
 }
