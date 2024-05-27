@@ -9,7 +9,6 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -55,7 +54,7 @@ public class MainTable extends Application {
         firstNameCol.setMinWidth(100);
         firstNameCol.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("firstName"));
-        firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        firstNameCol.setCellFactory(column -> new ValidatedCell("name"));
         firstNameCol.setOnEditCommit(
                 new EventHandler<CellEditEvent<Person, String>>() {
                     @Override
