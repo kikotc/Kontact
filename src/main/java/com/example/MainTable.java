@@ -1,8 +1,15 @@
 package com.example;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,6 +37,16 @@ public class MainTable extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public MainTable() {
+        data.addListener((ListChangeListener.Change <?extends Person> change) -> {
+            while (change.next()) {
+                if (change.wasAdded() || change.wasRemoved() || change.wasUpdated()) {
+                    saveCSV();
+                }
+            }
+        });
     }
 
     @Override
@@ -192,6 +209,40 @@ public class MainTable extends Application {
 
         stage.setScene(scene);
         stage.show();
+
+        loadCSV();
+    }
+
+    public void saveCSV() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Save.csv"))) {
+            for (Person person : data) {
+                writer.write(person.getFirstName() + "," +
+                             person.getLastName() + "," +
+                             person.getCompany() + "," +
+                             person.getPhoneNum() + "," +
+                             person.getEmail() + "," +
+                             person.getBirthday());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadCSV() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Save.csv"))) {
+            String line;
+            data.clear();
+
+            while ((line = reader.readLine()) != null) {
+                String[] fields = line.split(",");
+                if (fields.length == 6) {
+                    data.add(new Person(fields[0], fields[1], fields[2], fields[3], fields[4], fields[5]));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class Person {
