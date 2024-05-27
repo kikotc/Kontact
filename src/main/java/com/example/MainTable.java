@@ -74,7 +74,7 @@ public class MainTable extends Application {
 
         TableColumn companyCol = new TableColumn("Company");
         companyCol.setMinWidth(100);
-        companyCol.setCellValueFactory( 
+        companyCol.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("company"));
         companyCol.setCellFactory(TextFieldTableCell.forTableColumn());
         companyCol.setOnEditCommit(
@@ -170,7 +170,17 @@ public class MainTable extends Application {
             }
         });
 
-        hb.getChildren().addAll(addFirstName, addLastName, addCompany, addPhoneNum, addEmail, addBirthday, addButton);
+        final Button deleteButton = new Button("Delete");
+        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Person selected = table.getSelectionModel().getSelectedItem();
+                table.getItems().remove(selected);
+            }
+        });
+
+        hb.getChildren().addAll(addFirstName, addLastName, addCompany, addPhoneNum, addEmail, addBirthday, addButton,
+                deleteButton);
         hb.setSpacing(3);
 
         final VBox vbox = new VBox();
