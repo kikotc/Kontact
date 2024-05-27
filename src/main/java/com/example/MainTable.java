@@ -127,23 +127,23 @@ public class MainTable extends Application {
                     }
                 });
 
-        TableColumn birthdayCol = new TableColumn("Birthday");
-        birthdayCol.setMinWidth(100);
-        birthdayCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("birthday"));
-        birthdayCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        birthdayCol.setOnEditCommit(
+        TableColumn birthYearCol = new TableColumn("Birth Year");
+        birthYearCol.setMinWidth(100);
+        birthYearCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("birthYear"));
+        birthYearCol.setCellFactory(column -> new ValidatedCell("birthYear"));
+        birthYearCol.setOnEditCommit(
                 new EventHandler<CellEditEvent<Person, String>>() {
                     @Override
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setBirthday(t.getNewValue());
+                                t.getTablePosition().getRow())).setBirthYear(t.getNewValue());
                         saveCSV();
                     }
                 });
 
         table.setItems(data);
-        table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthdayCol);
+        table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthYearCol);
 
         final TextField addFirstName = new TextField();
         addFirstName.setMaxWidth(100);
@@ -160,9 +160,9 @@ public class MainTable extends Application {
         final TextField addEmail = new TextField();
         addEmail.setMaxWidth(200);
         addEmail.setPromptText("Email");
-        final TextField addBirthday = new TextField();
-        addBirthday.setMaxWidth(100);
-        addBirthday.setPromptText("Birthday");
+        final TextField addBirthYear = new TextField();
+        addBirthYear.setMaxWidth(100);
+        addBirthYear.setPromptText("Birth Year");
 
         final Button addButton = new Button("Add");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -174,24 +174,26 @@ public class MainTable extends Application {
                         addCompany.getText(),
                         addPhoneNum.getText(),
                         addEmail.getText(),
-                        addBirthday.getText());
+                        addBirthYear.getText());
                 ValidatedCell firstNameCell = new ValidatedCell("name");
                 ValidatedCell lastNameCell = new ValidatedCell("name");
                 ValidatedCell companyCell = new ValidatedCell("name");
                 ValidatedCell phoneNumCell = new ValidatedCell("phoneNum");
                 ValidatedCell emailCell = new ValidatedCell("email");
+                ValidatedCell birthYearCell = new ValidatedCell("birthYear");
                 if (firstNameCell.isValid(newPerson.getFirstName())
                         && lastNameCell.isValid(newPerson.getLastName())
                         && companyCell.isValid(newPerson.getCompany())
                         && phoneNumCell.isValid(newPerson.getPhoneNum())
-                        && emailCell.isValid(newPerson.getEmail())) {
+                        && emailCell.isValid(newPerson.getEmail())
+                        && birthYearCell.isValid(newPerson.getBirthYear())) {
                     data.add(newPerson);
                     addFirstName.clear();
                     addLastName.clear();
                     addCompany.clear();
                     addPhoneNum.clear();
                     addEmail.clear();
-                    addBirthday.clear();
+                    addBirthYear.clear();
                     saveCSV();
                 }
             }
@@ -207,7 +209,7 @@ public class MainTable extends Application {
             }
         });
 
-        hb.getChildren().addAll(addFirstName, addLastName, addCompany, addPhoneNum, addEmail, addBirthday, addButton,
+        hb.getChildren().addAll(addFirstName, addLastName, addCompany, addPhoneNum, addEmail, addBirthYear, addButton,
                 deleteButton);
         hb.setSpacing(2);
 
@@ -232,7 +234,7 @@ public class MainTable extends Application {
                         person.getCompany() + "," +
                         person.getPhoneNum() + "," +
                         person.getEmail() + "," +
-                        person.getBirthday());
+                        person.getBirthYear());
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -263,16 +265,16 @@ public class MainTable extends Application {
         private final SimpleStringProperty company;
         private final SimpleStringProperty phoneNum;
         private final SimpleStringProperty email;
-        private final SimpleStringProperty birthday;
+        private final SimpleStringProperty birthYear;
 
         private Person(String firstName, String lastName, String company, String phoneNum, String email,
-                String birthday) {
+                String birthYear) {
             this.firstName = new SimpleStringProperty(firstName);
             this.lastName = new SimpleStringProperty(lastName);
             this.company = new SimpleStringProperty(company);
             this.phoneNum = new SimpleStringProperty(phoneNum);
             this.email = new SimpleStringProperty(email);
-            this.birthday = new SimpleStringProperty(birthday);
+            this.birthYear = new SimpleStringProperty(birthYear);
         }
 
         public String getFirstName() {
@@ -315,12 +317,12 @@ public class MainTable extends Application {
             email.set(input);
         }
 
-        public String getBirthday() {
-            return birthday.get();
+        public String getBirthYear() {
+            return birthYear.get();
         }
 
-        public void setBirthday(String input) {
-            birthday.set(input);
+        public void setBirthYear(String input) {
+            birthYear.set(input);
         }
     }
 }

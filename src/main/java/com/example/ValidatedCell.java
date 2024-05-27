@@ -31,6 +31,8 @@ public class ValidatedCell extends TextFieldTableCell<Person, String> {
                 return input.equals("") || input.matches("[0-9]+");
             case "email":
                 return input.equals("") || isEmailValid(input);
+            case "birthYear":
+                return input.equals("") || (input.matches("[0-9]+") && Integer.parseInt(input) >= 1900 && Integer.parseInt(input) <= 2024);
             default:
                 return true;
         }
