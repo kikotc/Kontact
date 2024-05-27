@@ -5,12 +5,14 @@ import java.util.regex.Pattern;
 import com.example.MainTable.Person;
 
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.DefaultStringConverter;
 
 public class ValidatedCell extends TextFieldTableCell<Person, String> {
     
     private final String columnType;
 
     public ValidatedCell(String columnType) {
+        super(new DefaultStringConverter());
         this.columnType = columnType;
     }
 
