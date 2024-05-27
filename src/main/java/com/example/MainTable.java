@@ -61,7 +61,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setFirstName(t.getNewValue());
-                                saveCSV();
+                        saveCSV();
                     }
                 });
 
@@ -69,14 +69,14 @@ public class MainTable extends Application {
         lastNameCol.setMinWidth(100);
         lastNameCol.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("lastName"));
-        lastNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        lastNameCol.setCellFactory(column -> new ValidatedCell("name"));
         lastNameCol.setOnEditCommit(
                 new EventHandler<CellEditEvent<Person, String>>() {
                     @Override
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setLastName(t.getNewValue());
-                                saveCSV();
+                        saveCSV();
                     }
                 });
 
@@ -84,14 +84,14 @@ public class MainTable extends Application {
         companyCol.setMinWidth(100);
         companyCol.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("company"));
-        companyCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        companyCol.setCellFactory(column -> new ValidatedCell("name"));
         companyCol.setOnEditCommit(
                 new EventHandler<CellEditEvent<Person, String>>() {
                     @Override
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setCompany(t.getNewValue());
-                                saveCSV();
+                        saveCSV();
                     }
                 });
 
@@ -99,14 +99,14 @@ public class MainTable extends Application {
         phoneNumCol.setMinWidth(200);
         phoneNumCol.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("phoneNum"));
-        phoneNumCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        phoneNumCol.setCellFactory(column -> new ValidatedCell("phoneNum"));
         phoneNumCol.setOnEditCommit(
                 new EventHandler<CellEditEvent<Person, String>>() {
                     @Override
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setPhoneNum(t.getNewValue());
-                                saveCSV();
+                        saveCSV();
                     }
                 });
 
@@ -114,14 +114,14 @@ public class MainTable extends Application {
         emailCol.setMinWidth(200);
         emailCol.setCellValueFactory(
                 new PropertyValueFactory<Person, String>("email"));
-        emailCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        emailCol.setCellFactory(column -> new ValidatedCell("email"));
         emailCol.setOnEditCommit(
                 new EventHandler<CellEditEvent<Person, String>>() {
                     @Override
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setEmail(t.getNewValue());
-                                saveCSV();
+                        saveCSV();
                     }
                 });
 
@@ -136,7 +136,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setBirthday(t.getNewValue());
-                                saveCSV();
+                        saveCSV();
                     }
                 });
 
@@ -214,11 +214,11 @@ public class MainTable extends Application {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("Save.csv"))) {
             for (Person person : data) {
                 writer.write(person.getFirstName() + "," +
-                             person.getLastName() + "," +
-                             person.getCompany() + "," +
-                             person.getPhoneNum() + "," +
-                             person.getEmail() + "," +
-                             person.getBirthday());
+                        person.getLastName() + "," +
+                        person.getCompany() + "," +
+                        person.getPhoneNum() + "," +
+                        person.getEmail() + "," +
+                        person.getBirthday());
                 writer.newLine();
             }
         } catch (IOException e) {

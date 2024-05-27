@@ -8,7 +8,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DefaultStringConverter;
 
 public class ValidatedCell extends TextFieldTableCell<Person, String> {
-    
+
     private final String columnType;
 
     public ValidatedCell(String columnType) {
@@ -29,10 +29,10 @@ public class ValidatedCell extends TextFieldTableCell<Person, String> {
         switch (columnType) {
             case "name":
                 return input.matches("[a-zA-Z]+") && input.length() > 1;
-            case "email":
-                return isEmailValid(input);
             case "phoneNum":
                 return input.matches("[0-9]+") && input != null;
+            case "email":
+                return isEmailValid(input);
             default:
                 return true;
         }
