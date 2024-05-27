@@ -39,16 +39,6 @@ public class MainTable extends Application {
         launch(args);
     }
 
-    /*public MainTable() {
-        data.addListener((ListChangeListener.Change <?extends Person> change) -> {
-            while (change.next()) {
-                if (change.wasAdded() || change.wasRemoved() || change.wasUpdated()) {
-                    saveCSV();
-                }
-            }
-        });
-    }*/
-
     @Override
     public void start(Stage stage) {
         Scene scene = new Scene(new Group());
