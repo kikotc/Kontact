@@ -43,8 +43,8 @@ public class MainTable extends Application {
     public void start(Stage stage) {
         Scene scene = new Scene(new Group());
         stage.setTitle("Kontact");
-        stage.setWidth(900);
-        stage.setHeight(600);
+        stage.setWidth(840);
+        stage.setHeight(520);
 
         final Label label = new Label("Kontacts Book");
         label.setFont(new Font("Arial", 20));
@@ -145,22 +145,22 @@ public class MainTable extends Application {
         table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthdayCol);
 
         final TextField addFirstName = new TextField();
-        addFirstName.setMaxWidth(firstNameCol.getPrefWidth());
+        addFirstName.setMaxWidth(100);
         addFirstName.setPromptText("First Name");
         final TextField addLastName = new TextField();
-        addLastName.setMaxWidth(lastNameCol.getPrefWidth());
+        addLastName.setMaxWidth(100);
         addLastName.setPromptText("Last Name");
         final TextField addCompany = new TextField();
-        addCompany.setMaxWidth(companyCol.getPrefWidth());
+        addCompany.setMaxWidth(100);
         addCompany.setPromptText("Company");
         final TextField addPhoneNum = new TextField();
-        addPhoneNum.setMaxWidth(phoneNumCol.getPrefWidth());
+        addPhoneNum.setMaxWidth(200);
         addPhoneNum.setPromptText("Phone Number");
         final TextField addEmail = new TextField();
-        addEmail.setMaxWidth(emailCol.getPrefWidth());
+        addEmail.setMaxWidth(200);
         addEmail.setPromptText("Email");
         final TextField addBirthday = new TextField();
-        addBirthday.setMaxWidth(birthdayCol.getPrefWidth());
+        addBirthday.setMaxWidth(100);
         addBirthday.setPromptText("Birthday");
 
         final Button addButton = new Button("Add");
@@ -196,7 +196,7 @@ public class MainTable extends Application {
 
         hb.getChildren().addAll(addFirstName, addLastName, addCompany, addPhoneNum, addEmail, addBirthday, addButton,
                 deleteButton);
-        hb.setSpacing(3);
+        hb.setSpacing(2);
 
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
