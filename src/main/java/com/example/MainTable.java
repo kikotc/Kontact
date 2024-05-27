@@ -39,7 +39,7 @@ public class MainTable extends Application {
         launch(args);
     }
 
-    public MainTable() {
+    /*public MainTable() {
         data.addListener((ListChangeListener.Change <?extends Person> change) -> {
             while (change.next()) {
                 if (change.wasAdded() || change.wasRemoved() || change.wasUpdated()) {
@@ -47,7 +47,7 @@ public class MainTable extends Application {
                 }
             }
         });
-    }
+    }*/
 
     @Override
     public void start(Stage stage) {
@@ -72,6 +72,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setFirstName(t.getNewValue());
+                                saveCSV();
                     }
                 });
 
@@ -86,6 +87,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setLastName(t.getNewValue());
+                                saveCSV();
                     }
                 });
 
@@ -100,6 +102,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setCompany(t.getNewValue());
+                                saveCSV();
                     }
                 });
 
@@ -114,6 +117,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setPhoneNum(t.getNewValue());
+                                saveCSV();
                     }
                 });
 
@@ -128,6 +132,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setEmail(t.getNewValue());
+                                saveCSV();
                     }
                 });
 
@@ -142,6 +147,7 @@ public class MainTable extends Application {
                     public void handle(CellEditEvent<Person, String> t) {
                         ((Person) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())).setBirthday(t.getNewValue());
+                                saveCSV();
                     }
                 });
 
@@ -184,6 +190,7 @@ public class MainTable extends Application {
                 addPhoneNum.clear();
                 addEmail.clear();
                 addBirthday.clear();
+                saveCSV();
             }
         });
 
@@ -193,6 +200,7 @@ public class MainTable extends Application {
             public void handle(ActionEvent e) {
                 Person selected = table.getSelectionModel().getSelectedItem();
                 table.getItems().remove(selected);
+                saveCSV();
             }
         });
 
