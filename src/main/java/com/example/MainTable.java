@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.example.MainTable.Person;
+
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -166,20 +168,32 @@ public class MainTable extends Application {
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                data.add(new Person(
+                Person newPerson = new Person(
                         addFirstName.getText(),
                         addLastName.getText(),
                         addCompany.getText(),
                         addPhoneNum.getText(),
                         addEmail.getText(),
-                        addBirthday.getText()));
-                addFirstName.clear();
-                addLastName.clear();
-                addCompany.clear();
-                addPhoneNum.clear();
-                addEmail.clear();
-                addBirthday.clear();
-                saveCSV();
+                        addBirthday.getText());
+                ValidatedCell firstNameCell = new ValidatedCell("name");
+                ValidatedCell lastNameCell = new ValidatedCell("name");
+                ValidatedCell companyCell = new ValidatedCell("name");
+                ValidatedCell phoneNumCell = new ValidatedCell("phoneNum");
+                ValidatedCell emailCell = new ValidatedCell("email");
+                if (firstNameCell.isValid(newPerson.getFirstName())
+                        && lastNameCell.isValid(newPerson.getLastName())
+                        && companyCell.isValid(newPerson.getCompany())
+                        && phoneNumCell.isValid(newPerson.getPhoneNum())
+                        && emailCell.isValid(newPerson.getEmail())) {
+                    data.add(newPerson);
+                    addFirstName.clear();
+                    addLastName.clear();
+                    addCompany.clear();
+                    addPhoneNum.clear();
+                    addEmail.clear();
+                    addBirthday.clear();
+                    saveCSV();
+                }
             }
         });
 
