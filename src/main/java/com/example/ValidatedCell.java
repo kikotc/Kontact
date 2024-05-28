@@ -1,7 +1,6 @@
 package com.example;
 
 import com.example.MainTable.Person;
-import java.util.regex.Pattern;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DefaultStringConverter;
 
@@ -33,8 +32,7 @@ public class ValidatedCell extends TextFieldTableCell<Person, String> {
             case "phoneNum":
                 return input.equals("") || input.matches("[0-9]+");
             case "birthYear":
-                return input.equals("") || (input.matches("[0-9]+") && Integer.parseInt(input) >= 1900
-                        && Integer.parseInt(input) <= 2024);
+                return input.equals("") || (input.matches("[0-9]+") && Integer.parseInt(input) >= 1900 && Integer.parseInt(input) <= 2024);
             default:
                 return true;
         }

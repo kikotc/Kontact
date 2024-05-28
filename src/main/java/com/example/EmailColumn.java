@@ -1,14 +1,12 @@
 package com.example;
 
+import com.example.MainTable.Person;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import java.util.ArrayList;
-import java.util.List;
-
-import com.example.MainTable.Person;
 
 public class EmailColumn extends TableCell<Person, ArrayList<String>> {
 

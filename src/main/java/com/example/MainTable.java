@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.example.MainTable.Person;
-
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -21,10 +18,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -52,9 +49,11 @@ public class MainTable extends Application {
 
         table.setEditable(true);
 
+        // creating the first name column
         TableColumn<Person, String> firstNameCol = new TableColumn<>("First Name");
         firstNameCol.setMinWidth(100);
         firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        // validate input upon edit
         firstNameCol.setCellFactory(column -> new ValidatedCell("name"));
         firstNameCol.setOnEditCommit(event -> {
             Person person = event.getRowValue();
@@ -62,9 +61,11 @@ public class MainTable extends Application {
             saveCSV();
         });
 
+        // creating the last name column
         TableColumn<Person, String> lastNameCol = new TableColumn<>("Last Name");
         lastNameCol.setMinWidth(100);
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        // validate input upon edit
         lastNameCol.setCellFactory(column -> new ValidatedCell("name"));
         lastNameCol.setOnEditCommit(event -> {
             Person person = event.getRowValue();
@@ -72,16 +73,18 @@ public class MainTable extends Application {
             saveCSV();
         });
 
+        // creating the company column
         TableColumn<Person, String> companyCol = new TableColumn<>("Company");
         companyCol.setMinWidth(100);
         companyCol.setCellValueFactory(new PropertyValueFactory<>("company"));
-        companyCol.setCellFactory(column -> new ValidatedCell("name"));
+        companyCol.setCellFactory(TextFieldTableCell.forTableColumn());
         companyCol.setOnEditCommit(event -> {
             Person person = event.getRowValue();
             person.setCompany(event.getNewValue());
             saveCSV();
         });
 
+        // creating the phone number column
         TableColumn<Person, String> phoneNumCol = new TableColumn<>("Phone Number");
         phoneNumCol.setMinWidth(200);
         phoneNumCol.setCellValueFactory(new PropertyValueFactory<>("phoneNum"));
@@ -145,13 +148,11 @@ public class MainTable extends Application {
             Person newPerson = new Person(firstName, lastName, company, phoneNum, birthYear, new ArrayList<>(emails));
             ValidatedCell firstNameCell = new ValidatedCell("name");
             ValidatedCell lastNameCell = new ValidatedCell("name");
-            ValidatedCell companyCell = new ValidatedCell("name");
             ValidatedCell phoneNumCell = new ValidatedCell("phoneNum");
             ValidatedCell birthYearCell = new ValidatedCell("birthYear");
 
             if (firstNameCell.isValid(newPerson.getFirstName())
                     && lastNameCell.isValid(newPerson.getLastName())
-                    && companyCell.isValid(newPerson.getCompany())
                     && phoneNumCell.isValid(newPerson.getPhoneNum())
                     && birthYearCell.isValid(newPerson.getBirthYear())) {
                 data.add(newPerson);
