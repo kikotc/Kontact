@@ -88,6 +88,7 @@ public class MainTable extends Application {
         TableColumn<Person, String> phoneNumCol = new TableColumn<>("Phone Number");
         phoneNumCol.setMinWidth(200);
         phoneNumCol.setCellValueFactory(new PropertyValueFactory<>("phoneNum"));
+        // validate input upon edit
         phoneNumCol.setCellFactory(column -> new ValidatedCell("phoneNum"));
         phoneNumCol.setOnEditCommit(event -> {
             Person person = event.getRowValue();
@@ -95,14 +96,17 @@ public class MainTable extends Application {
             saveCSV();
         });
 
+        // creating the email column
         TableColumn<Person, ArrayList<String>> emailCol = new TableColumn<>("Emails");
         emailCol.setMinWidth(200);
         emailCol.setCellValueFactory(new PropertyValueFactory<>("emails"));
         emailCol.setCellFactory(column -> new EmailColumn());
 
+        // creating the birth year column
         TableColumn<Person, String> birthYearCol = new TableColumn<>("Birth Year");
         birthYearCol.setMinWidth(100);
         birthYearCol.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
+        // validate input upon edit
         birthYearCol.setCellFactory(column -> new ValidatedCell("birthYear"));
         birthYearCol.setOnEditCommit(event -> {
             Person person = event.getRowValue();
@@ -110,9 +114,11 @@ public class MainTable extends Application {
             saveCSV();
         });
 
+        // display columns
         table.setItems(data);
         table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthYearCol);
 
+        // creating text boxes to add contacts
         final TextField addFirstName = new TextField();
         addFirstName.setMaxWidth(100);
         addFirstName.setPromptText("First Name");
@@ -132,6 +138,7 @@ public class MainTable extends Application {
         addBirthYear.setMaxWidth(100);
         addBirthYear.setPromptText("Birth Year");
 
+        // button to add contact
         final Button addButton = new Button("Add");
         addButton.setOnAction(e -> {
             String firstName = addFirstName.getText();
@@ -151,6 +158,7 @@ public class MainTable extends Application {
             ValidatedCell phoneNumCell = new ValidatedCell("phoneNum");
             ValidatedCell birthYearCell = new ValidatedCell("birthYear");
 
+            // validate inputs
             if (firstNameCell.isValid(newPerson.getFirstName())
                     && lastNameCell.isValid(newPerson.getLastName())
                     && phoneNumCell.isValid(newPerson.getPhoneNum())
@@ -166,6 +174,7 @@ public class MainTable extends Application {
             }
         });
 
+        // button to delete contact
         final Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(e -> {
             Person selected = table.getSelectionModel().getSelectedItem();
@@ -190,14 +199,18 @@ public class MainTable extends Application {
         loadCSV();
     }
 
+    // method to save contacts list to csv
     public void saveCSV() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("Save.csv"))) {
             for (Person person : data) {
+                // first 5 comma separated elements in each row are first name, last name,
+                // company, phone number, and birth year
                 writer.write(person.getFirstName() + "," +
                         person.getLastName() + "," +
                         person.getCompany() + "," +
                         person.getPhoneNum() + "," +
                         person.getBirthYear());
+                // all the following comma separated elements in each row are email addresses
                 for (String email : person.getEmails()) {
                     writer.write("," + email);
                 }
@@ -208,6 +221,7 @@ public class MainTable extends Application {
         }
     }
 
+    // method to load contacts list from csv
     public void loadCSV() {
         try (BufferedReader reader = new BufferedReader(new FileReader("Save.csv"))) {
             String line;
@@ -220,6 +234,7 @@ public class MainTable extends Application {
                     emails.add(fields[i]);
                 }
                 if (fields.length >= 5) {
+                    // load the first 5 elements and as many emails as follows
                     data.add(new Person(fields[0], fields[1], fields[2], fields[3], fields[4], emails));
                 }
             }
@@ -228,6 +243,7 @@ public class MainTable extends Application {
         }
     }
 
+    // check if the email is valid
     private boolean isEmailsValid(List<String> emails) {
         for (String email : emails) {
             if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$") && !email.equals("")) {
@@ -255,6 +271,8 @@ public class MainTable extends Application {
             this.birthYear = new SimpleStringProperty(birthYear);
             this.emails = emails;
         }
+
+        // getters and setters
 
         public String getFirstName() {
             return firstName.get();

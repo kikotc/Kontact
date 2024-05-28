@@ -30,7 +30,7 @@ public class EmailColumn extends TableCell<Person, ArrayList<String>> {
         } else {
             if (isEditing()) {
                 vbox.getChildren().clear();
-                int[] index = {0};
+                int[] index = { 0 };
                 for (String email : emails) {
                     TextField emailField = new TextField(email);
                     final int emailIndex = index[0];
@@ -48,12 +48,13 @@ public class EmailColumn extends TableCell<Person, ArrayList<String>> {
         }
     }
 
+    // display the emails when editing/adding
     @Override
     public void startEdit() {
         super.startEdit();
         if (getItem() != null) {
             vbox.getChildren().clear();
-            int[] index = {0};
+            int[] index = { 0 };
             for (String email : getItem()) {
                 TextField emailField = new TextField(email);
                 final int emailIndex = index[0];
@@ -67,6 +68,7 @@ public class EmailColumn extends TableCell<Person, ArrayList<String>> {
         }
     }
 
+    // display the emails when no longer editing
     @Override
     public void cancelEdit() {
         super.cancelEdit();
@@ -79,6 +81,7 @@ public class EmailColumn extends TableCell<Person, ArrayList<String>> {
         setGraphic(null);
     }
 
+    // add an email to the list
     private void addNewEmail() {
         String newEmail = newEmailField.getText();
         if (!newEmail.isEmpty() && isEmailValid(newEmail)) {
@@ -89,6 +92,7 @@ public class EmailColumn extends TableCell<Person, ArrayList<String>> {
         }
     }
 
+    // edit an email in the list
     private void updateEmail(int index, String newEmail) {
         if (isEmailValid(newEmail)) {
             Person person = getTableView().getItems().get(getIndex());
@@ -97,6 +101,7 @@ public class EmailColumn extends TableCell<Person, ArrayList<String>> {
         }
     }
 
+    // check if the email is valid
     private boolean isEmailValid(String email) {
         String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
         return email.matches(regex);
