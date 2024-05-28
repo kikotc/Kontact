@@ -32,8 +32,6 @@ public class ValidatedCell extends TextFieldTableCell<Person, String> {
                 return input.equals("") || input.matches("[a-zA-Z]+");
             case "phoneNum":
                 return input.equals("") || input.matches("[0-9]+");
-            case "email":
-                return input.equals("") || isEmailValid(input);
             case "birthYear":
                 return input.equals("") || (input.matches("[0-9]+") && Integer.parseInt(input) >= 1900
                         && Integer.parseInt(input) <= 2024);
@@ -42,36 +40,35 @@ public class ValidatedCell extends TextFieldTableCell<Person, String> {
         }
     }
 
-    private boolean isEmailValid(String email) {
-        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(email).matches();
-    }
-
     @Override
-    public void updateItem(String birthYear, boolean empty) {
-        super.updateItem(birthYear, empty);
-        if (empty || birthYear.isEmpty()) {
-            setText(null);
-            setStyle("");
-        } else {
-            setText(birthYear);
-            int age =  2024 - Integer.parseInt(birthYear);
-            int decades = age / 10;
-
-            // Change the cell color based on the number of decades
-            if (decades < 2) {
-                setStyle("-fx-background-color: #d8f3dc;");
-            } else if (decades < 4) {
-                setStyle("-fx-background-color: #b7e4c7;");
-            } else if (decades < 6) {
-                setStyle("-fx-background-color: #95d5b2;");
-            } else if (decades < 8) {
-                setStyle("-fx-background-color: #74c69d;");
+    public void updateItem(String item, boolean empty) {
+        super.updateItem(item, empty);
+        if (columnType.equals("birthYear")) {
+            if (empty || item.isEmpty()) {
+                setText(null);
+                setStyle("");
             } else {
-                setStyle("-fx-background-color: #52b788;");
-            }
+                setText(item);
+                try {
+                    int age = 2024 - Integer.parseInt(item);
+                    int decades = age / 10;
 
+                    if (decades < 2) {
+                        setStyle("-fx-background-color: #d8f3dc;");
+                    } else if (decades < 4) {
+                        setStyle("-fx-background-color: #b7e4c7;");
+                    } else if (decades < 6) {
+                        setStyle("-fx-background-color: #95d5b2;");
+                    } else if (decades < 8) {
+                        setStyle("-fx-background-color: #74c69d;");
+                    } else {
+                        setStyle("-fx-background-color: #52b788;");
+                    }
+                } catch (NumberFormatException e) {
+                    setText(null);
+                    setStyle("");
+                }
+            }
         }
     }
 }

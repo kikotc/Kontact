@@ -5,6 +5,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.example.MainTable.Person;
 
@@ -12,8 +15,6 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,7 +25,6 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -52,95 +52,60 @@ public class MainTable extends Application {
 
         table.setEditable(true);
 
-        TableColumn firstNameCol = new TableColumn("First Name");
+        TableColumn<Person, String> firstNameCol = new TableColumn<>("First Name");
         firstNameCol.setMinWidth(100);
-        firstNameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("firstName"));
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         firstNameCol.setCellFactory(column -> new ValidatedCell("name"));
-        firstNameCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setFirstName(t.getNewValue());
-                        saveCSV();
-                    }
-                });
+        firstNameCol.setOnEditCommit(event -> {
+            Person person = event.getRowValue();
+            person.setFirstName(event.getNewValue());
+            saveCSV();
+        });
 
-        TableColumn lastNameCol = new TableColumn("Last Name");
+        TableColumn<Person, String> lastNameCol = new TableColumn<>("Last Name");
         lastNameCol.setMinWidth(100);
-        lastNameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("lastName"));
+        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         lastNameCol.setCellFactory(column -> new ValidatedCell("name"));
-        lastNameCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setLastName(t.getNewValue());
-                        saveCSV();
-                    }
-                });
+        lastNameCol.setOnEditCommit(event -> {
+            Person person = event.getRowValue();
+            person.setLastName(event.getNewValue());
+            saveCSV();
+        });
 
-        TableColumn companyCol = new TableColumn("Company");
+        TableColumn<Person, String> companyCol = new TableColumn<>("Company");
         companyCol.setMinWidth(100);
-        companyCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("company"));
+        companyCol.setCellValueFactory(new PropertyValueFactory<>("company"));
         companyCol.setCellFactory(column -> new ValidatedCell("name"));
-        companyCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setCompany(t.getNewValue());
-                        saveCSV();
-                    }
-                });
+        companyCol.setOnEditCommit(event -> {
+            Person person = event.getRowValue();
+            person.setCompany(event.getNewValue());
+            saveCSV();
+        });
 
-        TableColumn phoneNumCol = new TableColumn("Phone Number");
+        TableColumn<Person, String> phoneNumCol = new TableColumn<>("Phone Number");
         phoneNumCol.setMinWidth(200);
-        phoneNumCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("phoneNum"));
+        phoneNumCol.setCellValueFactory(new PropertyValueFactory<>("phoneNum"));
         phoneNumCol.setCellFactory(column -> new ValidatedCell("phoneNum"));
-        phoneNumCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setPhoneNum(t.getNewValue());
-                        saveCSV();
-                    }
-                });
+        phoneNumCol.setOnEditCommit(event -> {
+            Person person = event.getRowValue();
+            person.setPhoneNum(event.getNewValue());
+            saveCSV();
+        });
 
-        TableColumn emailCol = new TableColumn("Email");
+        TableColumn<Person, ArrayList<String>> emailCol = new TableColumn<>("Emails");
         emailCol.setMinWidth(200);
-        emailCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("email"));
-        emailCol.setCellFactory(column -> new ValidatedCell("email"));
-        emailCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
-                        saveCSV();
-                    }
-                });
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("emails"));
+        emailCol.setCellFactory(column -> new EmailColumn());
 
-        TableColumn birthYearCol = new TableColumn("Birth Year");
+        TableColumn<Person, String> birthYearCol = new TableColumn<>("Birth Year");
         birthYearCol.setMinWidth(100);
-        birthYearCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("birthYear"));
+        birthYearCol.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
         birthYearCol.setCellFactory(column -> new ValidatedCell("birthYear"));
-        birthYearCol.setOnEditCommit(
-                new EventHandler<CellEditEvent<Person, String>>() {
-                    @Override
-                    public void handle(CellEditEvent<Person, String> t) {
-                        ((Person) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setBirthYear(t.getNewValue());
-                        saveCSV();
-                    }
-                });
+        birthYearCol.setOnEditCommit(event -> {
+            Person person = event.getRowValue();
+            person.setBirthYear(event.getNewValue());
+            saveCSV();
+        });
 
         table.setItems(data);
         table.getColumns().addAll(firstNameCol, lastNameCol, companyCol, phoneNumCol, emailCol, birthYearCol);
@@ -165,48 +130,46 @@ public class MainTable extends Application {
         addBirthYear.setPromptText("Birth Year");
 
         final Button addButton = new Button("Add");
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                Person newPerson = new Person(
-                        addFirstName.getText(),
-                        addLastName.getText(),
-                        addCompany.getText(),
-                        addPhoneNum.getText(),
-                        addEmail.getText(),
-                        addBirthYear.getText());
-                ValidatedCell firstNameCell = new ValidatedCell("name");
-                ValidatedCell lastNameCell = new ValidatedCell("name");
-                ValidatedCell companyCell = new ValidatedCell("name");
-                ValidatedCell phoneNumCell = new ValidatedCell("phoneNum");
-                ValidatedCell emailCell = new ValidatedCell("email");
-                ValidatedCell birthYearCell = new ValidatedCell("birthYear");
-                if (firstNameCell.isValid(newPerson.getFirstName())
-                        && lastNameCell.isValid(newPerson.getLastName())
-                        && companyCell.isValid(newPerson.getCompany())
-                        && phoneNumCell.isValid(newPerson.getPhoneNum())
-                        && emailCell.isValid(newPerson.getEmail())
-                        && birthYearCell.isValid(newPerson.getBirthYear())) {
-                    data.add(newPerson);
-                    addFirstName.clear();
-                    addLastName.clear();
-                    addCompany.clear();
-                    addPhoneNum.clear();
-                    addEmail.clear();
-                    addBirthYear.clear();
-                    saveCSV();
-                }
+        addButton.setOnAction(e -> {
+            String firstName = addFirstName.getText();
+            String lastName = addLastName.getText();
+            String company = addCompany.getText();
+            String phoneNum = addPhoneNum.getText();
+            String birthYear = addBirthYear.getText();
+            List<String> emails = Arrays.asList(addEmail.getText().split(","));
+
+            if (!isEmailsValid(emails)) {
+                return;
+            }
+
+            Person newPerson = new Person(firstName, lastName, company, phoneNum, birthYear, new ArrayList<>(emails));
+            ValidatedCell firstNameCell = new ValidatedCell("name");
+            ValidatedCell lastNameCell = new ValidatedCell("name");
+            ValidatedCell companyCell = new ValidatedCell("name");
+            ValidatedCell phoneNumCell = new ValidatedCell("phoneNum");
+            ValidatedCell birthYearCell = new ValidatedCell("birthYear");
+
+            if (firstNameCell.isValid(newPerson.getFirstName())
+                    && lastNameCell.isValid(newPerson.getLastName())
+                    && companyCell.isValid(newPerson.getCompany())
+                    && phoneNumCell.isValid(newPerson.getPhoneNum())
+                    && birthYearCell.isValid(newPerson.getBirthYear())) {
+                data.add(newPerson);
+                addFirstName.clear();
+                addLastName.clear();
+                addCompany.clear();
+                addPhoneNum.clear();
+                addEmail.clear();
+                addBirthYear.clear();
+                saveCSV();
             }
         });
 
         final Button deleteButton = new Button("Delete");
-        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                Person selected = table.getSelectionModel().getSelectedItem();
-                table.getItems().remove(selected);
-                saveCSV();
-            }
+        deleteButton.setOnAction(e -> {
+            Person selected = table.getSelectionModel().getSelectedItem();
+            table.getItems().remove(selected);
+            saveCSV();
         });
 
         hb.getChildren().addAll(addFirstName, addLastName, addCompany, addPhoneNum, addEmail, addBirthYear, addButton,
@@ -233,8 +196,10 @@ public class MainTable extends Application {
                         person.getLastName() + "," +
                         person.getCompany() + "," +
                         person.getPhoneNum() + "," +
-                        person.getEmail() + "," +
                         person.getBirthYear());
+                for (String email : person.getEmails()) {
+                    writer.write("," + email);
+                }
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -249,13 +214,26 @@ public class MainTable extends Application {
 
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
-                if (fields.length == 6) {
-                    data.add(new Person(fields[0], fields[1], fields[2], fields[3], fields[4], fields[5]));
+                ArrayList<String> emails = new ArrayList<>();
+                for (int i = 5; i < fields.length; i++) {
+                    emails.add(fields[i]);
+                }
+                if (fields.length >= 5) {
+                    data.add(new Person(fields[0], fields[1], fields[2], fields[3], fields[4], emails));
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isEmailsValid(List<String> emails) {
+        for (String email : emails) {
+            if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$") && !email.equals("")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static class Person {
@@ -264,17 +242,17 @@ public class MainTable extends Application {
         private final SimpleStringProperty lastName;
         private final SimpleStringProperty company;
         private final SimpleStringProperty phoneNum;
-        private final SimpleStringProperty email;
         private final SimpleStringProperty birthYear;
+        private final ArrayList<String> emails;
 
-        private Person(String firstName, String lastName, String company, String phoneNum, String email,
-                String birthYear) {
+        private Person(String firstName, String lastName, String company, String phoneNum,
+                String birthYear, ArrayList<String> emails) {
             this.firstName = new SimpleStringProperty(firstName);
             this.lastName = new SimpleStringProperty(lastName);
             this.company = new SimpleStringProperty(company);
             this.phoneNum = new SimpleStringProperty(phoneNum);
-            this.email = new SimpleStringProperty(email);
             this.birthYear = new SimpleStringProperty(birthYear);
+            this.emails = emails;
         }
 
         public String getFirstName() {
@@ -309,20 +287,21 @@ public class MainTable extends Application {
             phoneNum.set(input);
         }
 
-        public String getEmail() {
-            return email.get();
-        }
-
-        public void setEmail(String input) {
-            email.set(input);
-        }
-
         public String getBirthYear() {
             return birthYear.get();
         }
 
         public void setBirthYear(String input) {
             birthYear.set(input);
+        }
+
+        public ArrayList<String> getEmails() {
+            return emails;
+        }
+
+        public void setEmails(List<String> input) {
+            emails.clear();
+            emails.addAll(input);
         }
     }
 }
